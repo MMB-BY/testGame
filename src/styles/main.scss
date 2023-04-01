@@ -1,0 +1,15 @@
+$primary-color: #ffff00;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $primary-color;
+}
+
+h1 {
+    color: blue;
+}
