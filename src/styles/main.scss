@@ -1,4 +1,4 @@
-$primary-color: #eef7f0;
+$background-main: rgba(0, 0, 0, 0.37);
 
 * {
     margin: 0;
@@ -8,7 +8,7 @@ $primary-color: #eef7f0;
 }
 
 body {
-    background-color: $primary-color;
+    background-color: $background-main;
 }
 
 h1 {
