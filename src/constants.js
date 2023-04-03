@@ -1,9 +1,9 @@
 
-export const N = 9;
-export const M = 9;
+export const N = 10; //height
+export const M = 9; //width
 export const blockSize = {
-    width: 400 / N,
-    height: 450 / M,
+    width: 400 / M,
+    height: 450 / N,
 };
 export const colors = [
     'green',
