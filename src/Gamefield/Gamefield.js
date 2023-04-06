@@ -10,6 +10,7 @@ export class Gamefield {
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
     this.animInProgress = false;
+    this.canvasPadding = 25;
   }
 
   tickDrop(data, time) {
@@ -46,8 +47,6 @@ export class Gamefield {
     this.render(data);
     if (deltaTime < (animDuration / 2)) {
       requestAnimationFrame(() => this.tickRemove(data, time));
-    } else {
-      this.animInProgress = false;
     }
   }
 
@@ -63,6 +62,7 @@ export class Gamefield {
   }
   
   animRemove(field) {
+    this.animInProgress = true;
     const time = new Date().getTime();
     const data = field.flat();
     requestAnimationFrame(() => this.tickRemove(data, time));
@@ -87,8 +87,8 @@ export class Gamefield {
           image.src = block.img.src;
           ctx.drawImage(
             image,
-            x + (width * (0.5 - scale / 2)),
-            y + (height * (0.5 - scale / 2)),
+            x + (width * (0.5 - scale / 2)) + this.canvasPadding / 2,
+            y + (height * (0.5 - scale / 2)) + this.canvasPadding / 2,
             width * scale,
             height * scale,
           );

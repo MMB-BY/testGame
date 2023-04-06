@@ -14,3 +14,9 @@ body {
 h1 {
     color: blue;
 }
+
+canvas {
+    border-radius: 25px;
+    background-image: url(../assets/fieldBackground.png);
+    background-size: cover;
+}
