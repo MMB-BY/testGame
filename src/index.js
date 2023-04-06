@@ -1,7 +1,5 @@
 import returnsmt from "./someFile";
 import './styles/main.scss';
-import { RNG } from "./helpers/RNG";
-import { Gamefield } from "./Gamefield/Gamefield";
 import { loadAssets } from "./helpers/assetsLoading/loadAssets";
 import { Game } from "./game/game";
 
@@ -13,8 +11,6 @@ const init = async () => {
     const images = await loadAssets();
     const game = new Game(images);
     game.initGame();
-    // const gamefield = new Gamefield(images);
-    // gamefield.fillFIeld();
 };
 
 init();

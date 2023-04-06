@@ -6,7 +6,7 @@ export const blockSize = {
     width: 400 / M,
     height: 450 / N,
 };
-export const colors = [
+export const types = [
     'green',
     'yellow',
     'red',

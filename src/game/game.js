@@ -1,13 +1,9 @@
 import { Gamefield } from "../Gamefield/Gamefield";
-import { M, N, animDuration, blockSize, colors, minDelAmount } from "../constants";
+import { M, N, animDuration, blockSize, minDelAmount } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Game {
   constructor(images) {
-    // this.blocks = colors.map((color) => ({
-    //   color,
-    //   img: images.find(({ colorIndex }) => colorIndex === color),
-    // }));
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
     this.gamefield = new Gamefield(images);
@@ -29,7 +25,7 @@ export class Game {
           y: blockSize.height * j,
           width: blockSize.width,
           height: blockSize.height + blockSize.height * (1 / N),
-          color: this.rng.getColor(),
+          type: this.rng.getType(),
           move: 0,
           toRemove: false,
           scale: 1,
@@ -78,7 +74,7 @@ export class Game {
         const topRowId = rowId + 1;
         if (
           this.field[columnId][topRowId] &&
-          this.field[columnId][topRowId].color === value
+          this.field[columnId][topRowId].type === value
         ) {
           if (this.checkGroup(columnId, topRowId)) {
             this.addToGroup(columnId, topRowId, value);
@@ -91,7 +87,7 @@ export class Game {
         const bottom = rowId - 1;
         if (
           this.field[columnId][bottom] &&
-          this.field[columnId][bottom].color === value
+          this.field[columnId][bottom].type === value
         ) {
           if (this.checkGroup(columnId, bottom)) {
             this.addToGroup(columnId, bottom, value);
@@ -103,7 +99,7 @@ export class Game {
         if (columnId === M - 1) return;
         const rightColumnId = columnId + 1;
         if (this.field[rightColumnId][rowId]) {
-          if (this.field[rightColumnId][rowId].color === value) {
+          if (this.field[rightColumnId][rowId].type === value) {
             if (this.checkGroup(rightColumnId, rowId)) {
               this.addToGroup(rightColumnId, rowId, value);
               this.collectNeighbours(rightColumnId, rowId);
@@ -116,7 +112,7 @@ export class Game {
         const leftColumnId = columnId - 1;
         if (
           this.field[leftColumnId][rowId] &&
-          this.field[leftColumnId][rowId].color === value
+          this.field[leftColumnId][rowId].type === value
         ) {
           if (this.checkGroup(leftColumnId, rowId)) {
             this.addToGroup(leftColumnId, rowId, value);
@@ -128,7 +124,7 @@ export class Game {
   }
 
   collectNeighbours(columnId, rowId) {
-    const state = this.field[columnId][rowId].color;
+    const state = this.field[columnId][rowId].type;
     this.checkNeighbour(columnId, rowId, "top", state);
     this.checkNeighbour(columnId, rowId, "bottom", state);
     this.checkNeighbour(columnId, rowId, "right", state);
@@ -136,7 +132,7 @@ export class Game {
   }
 
   findGroup(columnId, rowId) {
-    const state = this.field[columnId][rowId].color;
+    const state = this.field[columnId][rowId].type;
     this.addToGroup(columnId, rowId, state);
     this.collectNeighbours(columnId, rowId);
   }
@@ -160,14 +156,14 @@ export class Game {
       const tcol = column.filter(({toRemove}) => !toRemove);
       column.forEach((row, ri) => {
         if (tcol[ri]) {
-          row.color = tcol[ri].color;
+          row.type = tcol[ri].type;
           row.move = row.y - tcol[ri].y;
           row.scale = 1;
           row.toRemove = false;
         } else {
           row.scale = 1;
           row.toRemove = false;
-          row.color = this.rng.getColor();
+          row.type = this.rng.getType();
           row.move = blockSize.height * (ri + 2);
         }
       });

@@ -8,23 +8,23 @@ export const getAssetsData = () => {
   return [
     {
       link: blueImg,
-      color: "blue",
+      type: "blue",
     },
     {
       link: greenImg,
-      color: "green",
+      type: "green",
     },
     {
       link: purpleImg,
-      color: "purple",
+      type: "purple",
     },
     {
       link: redImg,
-      color: "red",
+      type: "red",
     },
     {
       link: yellowImg,
-      color: "yellow",
+      type: "yellow",
     },
   ];
 };

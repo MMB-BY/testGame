@@ -1,11 +1,11 @@
-import { animDuration, blockSize, colors } from "../constants";
+import { animDuration, blockSize, types } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Gamefield {
   constructor(images) {
-    this.blocks = colors.map((color) => ({
-      color,
-      img: images.find(({ colorIndex }) => colorIndex === color),
+    this.blocks = types.map((type) => ({
+      type,
+      img: images.find(({ type: imgType }) => imgType === type),
     }));
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
@@ -77,11 +77,11 @@ export class Gamefield {
         y,
         width,
         height,
-        color,
+        type,
         scale,
     }) => {
-        if (!color) return;
-        const block = this.blocks.find((block) => block.color === color);
+        if (!type) return;
+        const block = this.blocks.find((block) => block.type === type);
         const image = new Image(blockSize.width, blockSize.height);
         if (block.img) {
           image.src = block.img.src;
