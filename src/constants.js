@@ -13,3 +13,5 @@ export const colors = [
     'purple',
     'blue',
 ];
+
+export const animDuration = 500;

@@ -1,4 +1,4 @@
-import { M, N, blockSize, colors } from "../constants";
+import { animDuration, blockSize, colors } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Gamefield {
@@ -9,6 +9,37 @@ export class Gamefield {
     }));
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
+    this.animInProgress = false;
+  }
+
+  tickDrop(data, time) {
+    const deltaTime = new Date().getTime() - time;
+    data.forEach((elem) => {
+      if (elem.move > 0) {
+        elem.y += (elem.move / animDuration) * deltaTime;
+        elem.move -= (elem.move / animDuration) * deltaTime;
+      } else {
+        elem.move = 0;
+      }
+    });
+    this.render(data);
+    if (deltaTime < animDuration) {
+      requestAnimationFrame(() => this.tickDrop(data, time));
+    } else {
+      this.animInProgress = false;
+    }
+  }
+
+  animDrop(field) {
+    this.animInProgress = true;
+    const time = new Date().getTime();
+    const data = field.flat();
+    data.forEach((elem) => {
+      if (elem.move > 0) {
+        elem.y -= elem.move;
+      }
+    });
+    requestAnimationFrame(() => this.tickDrop(data, time));
   }
 
   render(field) {

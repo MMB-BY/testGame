@@ -30,6 +30,7 @@ export class Game {
           width: blockSize.width,
           height: blockSize.height + blockSize.height * (1 / N),
           color: this.rng.getColor(),
+          move: 0,
         });
       }
       this.field.push(column);
@@ -146,12 +147,30 @@ export class Game {
     }
     this.initGroup();
     this.removeIds = [];
+    this.updateField();
+  }
+
+  updateField() {
+    this.field.forEach((column, ci) => {
+      const tcol = column.filter(({color}) => color);
+      column.forEach((row, ri) => {
+        if (tcol[ri]) {
+          row.color = tcol[ri].color;
+          row.move = row.y - tcol[ri].y;
+        } else {
+          row.color = this.rng.getColor();
+          row.move = blockSize.height * (ri + 2);
+        }
+      });
+    });
+    this.gamefield.animDrop(this.field);
   }
 
   addListener() {
     const canvasLeft = this.canvas.offsetLeft + this.canvas.clientLeft;
     const canvasTop = this.canvas.offsetTop + this.canvas.clientTop;
     this.canvas.addEventListener("click", (event) => {
+      if (this.gamefield.animInProgress) return; 
       const x = event.pageX - canvasLeft;
       const y = event.pageY - canvasTop;
       const { columnId, rowId } = this.selectBlock(x, y);
@@ -166,7 +185,7 @@ export class Game {
         });
         this.removeBlocks();
       }
-      this.gamefield.render(this.field);
+      // this.gamefield.render(this.field);
     });
   }
 
