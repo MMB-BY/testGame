@@ -15,3 +15,4 @@ export const types = [
 ];
 
 export const animDuration = 500;
+export const canvasPadding = 25;

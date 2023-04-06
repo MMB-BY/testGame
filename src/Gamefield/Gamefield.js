@@ -1,4 +1,4 @@
-import { animDuration, blockSize, types } from "../constants";
+import { animDuration, blockSize, canvasPadding, types } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Gamefield {
@@ -10,7 +10,6 @@ export class Gamefield {
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
     this.animInProgress = false;
-    this.canvasPadding = 25;
   }
 
   tickDrop(data, time) {
@@ -87,8 +86,8 @@ export class Gamefield {
           image.src = block.img.src;
           ctx.drawImage(
             image,
-            x + (width * (0.5 - scale / 2)) + this.canvasPadding / 2,
-            y + (height * (0.5 - scale / 2)) + this.canvasPadding / 2,
+            x + (width * (0.5 - scale / 2)) + canvasPadding / 2,
+            y + (height * (0.5 - scale / 2)) + canvasPadding / 2,
             width * scale,
             height * scale,
           );

@@ -1,5 +1,5 @@
 import { Gamefield } from "../Gamefield/Gamefield";
-import { M, N, animDuration, blockSize, minDelAmount } from "../constants";
+import { M, N, animDuration, blockSize, canvasPadding, minDelAmount } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Game {
@@ -172,8 +172,14 @@ export class Game {
   }
 
   addListener() {
-    const canvasLeft = this.canvas.offsetLeft + this.canvas.clientLeft;
-    const canvasTop = this.canvas.offsetTop + this.canvas.clientTop;
+    const canvasLeft = 
+      this.canvas.offsetLeft
+      + this.canvas.clientLeft
+      + canvasPadding / 2;
+    const canvasTop =
+      this.canvas.offsetTop
+      + this.canvas.clientTop
+      + canvasPadding / 2;
     this.canvas.addEventListener("click", (event) => {
       if (this.gamefield.animInProgress) return; 
       const x = event.pageX - canvasLeft;
