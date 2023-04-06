@@ -1,5 +1,5 @@
 import { Gamefield } from "../Gamefield/Gamefield";
-import { M, N, blockSize, colors, minDelAmount } from "../constants";
+import { M, N, animDuration, blockSize, colors, minDelAmount } from "../constants";
 import { RNG } from "../helpers/RNG";
 
 export class Game {
@@ -31,6 +31,8 @@ export class Game {
           height: blockSize.height + blockSize.height * (1 / N),
           color: this.rng.getColor(),
           move: 0,
+          toRemove: false,
+          scale: 1,
         });
       }
       this.field.push(column);
@@ -142,22 +144,29 @@ export class Game {
   removeBlocks() {
     if (this.removeIds.length >= minDelAmount) {
       this.removeIds.forEach(({ CI, RI }) => {
-        this.field[CI][RI].color = null;
+        this.field[CI][RI].toRemove = true;
       });
+      this.gamefield.animRemove(this.field);
+      window.setTimeout(() => {
+        this.updateField();
+      }, animDuration / 2); 
     }
     this.initGroup();
     this.removeIds = [];
-    this.updateField();
   }
 
   updateField() {
     this.field.forEach((column, ci) => {
-      const tcol = column.filter(({color}) => color);
+      const tcol = column.filter(({toRemove}) => !toRemove);
       column.forEach((row, ri) => {
         if (tcol[ri]) {
           row.color = tcol[ri].color;
           row.move = row.y - tcol[ri].y;
+          row.scale = 1;
+          row.toRemove = false;
         } else {
+          row.scale = 1;
+          row.toRemove = false;
           row.color = this.rng.getColor();
           row.move = blockSize.height * (ri + 2);
         }
