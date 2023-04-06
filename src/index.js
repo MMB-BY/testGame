@@ -3,10 +3,6 @@ import './styles/main.scss';
 import { loadAssets } from "./helpers/assetsLoading/loadAssets";
 import { Game } from "./game/game";
 
-const canvas = document.getElementById('canvas');
-
-canvas.style.border = '1px solid black';
-
 const init = async () => {
     const images = await loadAssets();
     const game = new Game(images);
