@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="main">
-        <h1>score: <span id="score"></span></h1>
-        <canvas id="canvas" width="435" height="480"></canvas>
-        <button id="button">click</button>
+      <div class="progress">
+        <span class="progress__title">Прогресс</span>
+        <div class="progress__PB-background">
+          <div id="score"></div>
+        </div>
+      </div>
+      <canvas id="canvas" width="435" height="480"></canvas>
+      <button id="button">click</button>
     </div>
-</body>
+  </body>
 </html>

@@ -1,23 +1,60 @@
 $background-main: rgba(0, 0, 0, 0.37);
+$primary-grey: #dddddd;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
 }
 
 body {
-    background-color: $background-main;
+  background-color: $background-main;
 }
 
 h1 {
-    color: blue;
+  color: blue;
 }
 
 canvas {
-    border-radius: 25px;
-    border: 1px solid #dddddd;
-    background-image: url(../assets/fieldBackground.png);
+  border-radius: 25px;
+  border: 1px solid $primary-grey;
+  background-image: url(../assets/fieldBackground.png);
+  background-size: cover;
+}
+
+.progress {
+  width: 400px;
+  height: 80px;
+  margin: 0 auto;
+  background-image: url(../assets/progressBackground.png);
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+
+  &__title {
+    color: $primary-grey;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  &__PB-background {
+    width: 360px;
+    height: 30px;
+    background-image: url(../assets/progressBarBackground.png);
+    border-radius: 30px;
     background-size: cover;
+    overflow: hidden;
+  }
+
+  #score {
+    width: 360px;
+    height: 30px;
+    background-image: url(../assets/progressBar.png);
+    background-size: contain;
+  }
 }

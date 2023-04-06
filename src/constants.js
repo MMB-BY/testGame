@@ -14,5 +14,5 @@ export const types = [
     'blue',
 ];
 
-export const animDuration = 500;
+export const animDuration = 400;
 export const canvasPadding = 25;

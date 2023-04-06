@@ -1,10 +1,19 @@
 import { Gamefield } from "../Gamefield/Gamefield";
-import { M, N, animDuration, blockSize, canvasPadding, minDelAmount } from "../constants";
+import {
+  M,
+  N,
+  animDuration,
+  blockSize,
+  canvasPadding,
+  minDelAmount,
+} from "../constants";
 import { RNG } from "../helpers/RNG";
+import { Score } from "./score";
 
 export class Game {
   constructor(images) {
     this.canvas = document.getElementById("canvas");
+    this.score = new Score();
     this.rng = new RNG();
     this.gamefield = new Gamefield(images);
     this.field = [];
@@ -141,11 +150,12 @@ export class Game {
     if (this.removeIds.length >= minDelAmount) {
       this.removeIds.forEach(({ CI, RI }) => {
         this.field[CI][RI].toRemove = true;
+        this.score.increase();
       });
       this.gamefield.animRemove(this.field);
       window.setTimeout(() => {
         this.updateField();
-      }, animDuration / 2); 
+      }, animDuration / 2);
     }
     this.initGroup();
     this.removeIds = [];
@@ -153,7 +163,7 @@ export class Game {
 
   updateField() {
     this.field.forEach((column, ci) => {
-      const tcol = column.filter(({toRemove}) => !toRemove);
+      const tcol = column.filter(({ toRemove }) => !toRemove);
       column.forEach((row, ri) => {
         if (tcol[ri]) {
           row.type = tcol[ri].type;
@@ -172,16 +182,12 @@ export class Game {
   }
 
   addListener() {
-    const canvasLeft = 
-      this.canvas.offsetLeft
-      + this.canvas.clientLeft
-      + canvasPadding / 2;
+    const canvasLeft =
+      this.canvas.offsetLeft + this.canvas.clientLeft + canvasPadding / 2;
     const canvasTop =
-      this.canvas.offsetTop
-      + this.canvas.clientTop
-      + canvasPadding / 2;
+      this.canvas.offsetTop + this.canvas.clientTop + canvasPadding / 2;
     this.canvas.addEventListener("click", (event) => {
-      if (this.gamefield.animInProgress) return; 
+      if (this.gamefield.animInProgress) return;
       const x = event.pageX - canvasLeft;
       const y = event.pageY - canvasTop;
       const { columnId, rowId } = this.selectBlock(x, y);
@@ -201,6 +207,7 @@ export class Game {
   }
 
   initGame() {
+    this.score.init();
     this.setField();
     this.initGroup();
     this.gamefield.render(this.field);

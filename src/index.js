@@ -11,10 +11,8 @@ const init = async () => {
 
 init();
 
-let points = 0;
 
 const button = document.getElementById('button');
-const score = document.getElementById('score');
 button.addEventListener('click', () => {
     points += 10;
     score.innerHTML = points;
