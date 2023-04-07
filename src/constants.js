@@ -30,3 +30,4 @@ export const nukeBonus = 10;
 export const bombRadius = 2;
 export const animDuration = 400;
 export const canvasPadding = 25;
+export const shuffleTimes = 3;

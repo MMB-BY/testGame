@@ -15,12 +15,14 @@ import {
 import { RNG } from "../helpers/RNG";
 import { Moves } from "./moves";
 import { Score } from "./score";
+import { Shuffle } from "./shuffle";
 
 export class Game {
   constructor(images, aim, steps) {
     this.canvas = document.getElementById("canvas");
     this.score = new Score(aim);
     this.moves = new Moves(steps);
+    this.shuffle = new Shuffle();
     this.rng = new RNG();
     this.gamefield = new Gamefield(images);
     this.field = [];
@@ -35,6 +37,7 @@ export class Game {
   }
 
   setField() {
+    this.field = [];
     for (let i = 0; i < M; i++) {
       const column = [];
       for (let j = N - 1; j >= 0; j--) {
@@ -50,11 +53,11 @@ export class Game {
         });
       }
       this.field.push(column);
-    }
+    };
   }
 
   selectBlock(x, y) {
-    let pos = null;
+    let pos = {columnId: -1, rowId: -1};
     this.field.forEach((column, columnId) => {
       column.forEach((elem, rowId) => {
         const { x: elemX, y: elemY, width, height } = elem;
@@ -193,7 +196,6 @@ export class Game {
   checkBonuses() {
     if (this.selectedIds) {
       const selected = this.field[this.selectedIds.col][this.selectedIds.row];
-      console.log(this.removeIds.length)
       if (this.removeIds.length >= nukeBonus) {
         selected.type = 'nuke';
         selected.toRemove = false;
@@ -293,6 +295,7 @@ export class Game {
     this.gamefield.animWin(this.field);
     this.canvas.removeEventListener("click", this.clickCB);
     document.getElementById("restart").style.display = "flex";
+    this.shuffle.getShuffleButton().style.display = 'none';
   }
 
   lose() {
@@ -300,11 +303,23 @@ export class Game {
     this.gamefield.animLose(this.field);
     this.canvas.removeEventListener("click", this.clickCB);
     document.getElementById("restart").style.display = "flex";
+    this.shuffle.getShuffleButton().style.display = 'none';
+  }
+  
+  shuffleCB() {
+    this.setField();
+    this.gamefield.render(this.field);
+    this.shuffle.decrement();
+    if (this.shuffle.check()) {
+      document.getElementById("restart").style.display = "flex";
+    }
   }
 
   initGame() {
     this.score.init();
     this.moves.init();
+    this.shuffle.init();
+    this.shuffle.getShuffleButton().addEventListener('click', () => this.shuffleCB());
     this.setField();
     this.initGroup();
     this.gamefield.render(this.field);
