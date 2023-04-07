@@ -8,14 +8,37 @@
   </head>
   <body>
     <div id="main">
-      <div class="progress">
-        <span class="progress__title">Прогресс</span>
-        <div class="progress__PB-background">
-          <div id="score"></div>
+      <div class="homeScreen" hidden>
+        <div class="homeScreen__start">
+          <button id="button">click</button>
+        </div>
+        <div class="homeScreen__reStart">
+
+          <button id="button">click</button>
         </div>
       </div>
-      <canvas id="canvas" width="435" height="480"></canvas>
-      <button id="button">click</button>
+      <div class="gameScreen">
+        <div class="progress">
+          <span class="progress__title">Прогресс</span>
+          <div class="progress__PB-background">
+            <div id="score"></div>
+          </div>
+        </div>
+        <div class="gameField">
+          <canvas id="canvas" width="435" height="480"></canvas>
+          <div class="gameField__controls">
+            <div class="panelScore">
+              <div class="panelScore__moves">
+                <span id="moves"></span>
+              </div>
+              <div class="panelScore__points">
+                <span>очки:</span>
+                <span id="points"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

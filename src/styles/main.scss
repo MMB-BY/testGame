@@ -16,6 +16,51 @@ h1 {
   color: blue;
 }
 
+.gameScreen {
+  display: flex;
+  flex-direction: column;
+
+  .gameField {
+    display: flex;
+    justify-content: space-evenly;
+    
+    &__controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      .panelScore {
+        width: 278px;
+        height: 260px;
+        background-image: url(../assets/panelScore.png);
+        background-size: contain;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        color: $primary-grey;
+        font-weight: 700;
+        font-size: 24px;
+
+        &__moves {
+          font-size: 60px;
+        }
+
+        &__points {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          gap: 5px;
+        }
+      }
+  }
+
+  }
+}
+
 canvas {
   border-radius: 25px;
   border: 1px solid $primary-grey;

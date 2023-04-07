@@ -8,12 +8,14 @@ import {
   minDelAmount,
 } from "../constants";
 import { RNG } from "../helpers/RNG";
+import { Moves } from "./moves";
 import { Score } from "./score";
 
 export class Game {
   constructor(images) {
     this.canvas = document.getElementById("canvas");
     this.score = new Score();
+    this.moves = new Moves();
     this.rng = new RNG();
     this.gamefield = new Gamefield(images);
     this.field = [];
@@ -201,13 +203,14 @@ export class Game {
           });
         });
         this.removeBlocks();
+        this.moves.decrement();
       }
-      // this.gamefield.render(this.field);
     });
   }
 
   initGame() {
     this.score.init();
+    this.moves.init();
     this.setField();
     this.initGroup();
     this.gamefield.render(this.field);
