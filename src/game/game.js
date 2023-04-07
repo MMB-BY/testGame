@@ -35,7 +35,7 @@ export class Game {
           x: blockSize.width * i,
           y: blockSize.height * j,
           width: blockSize.width,
-          height: blockSize.height + blockSize.height * (1 / N),
+          height: blockSize.height + blockSize.height * 0.1,
           type: this.rng.getType(),
           move: 0,
           toRemove: false,
