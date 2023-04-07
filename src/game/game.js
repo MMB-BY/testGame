@@ -4,8 +4,13 @@ import {
   N,
   animDuration,
   blockSize,
+  bombBonus,
+  bombRadius,
   canvasPadding,
+  horizontalBonus,
   minDelAmount,
+  nukeBonus,
+  verticalBonus,
 } from "../constants";
 import { RNG } from "../helpers/RNG";
 import { Moves } from "./moves";
@@ -22,6 +27,7 @@ export class Game {
     this.group = new Array(M).fill(null).map(() => new Array(N).fill(null));
     this.removeIds = [];
     this.gameOver = false;
+    this.selectedIds = null;
   }
 
   initGroup() {
@@ -76,6 +82,7 @@ export class Game {
   }
 
   addToGroup(columnId, rowId, value) {
+    if (columnId >= 0 && columnId < M && rowId >= 0 && rowId < N)
     this.group[columnId][rowId] = value;
   }
 
@@ -145,8 +152,69 @@ export class Game {
 
   findGroup(columnId, rowId) {
     const state = this.field[columnId][rowId].type;
-    this.addToGroup(columnId, rowId, state);
-    this.collectNeighbours(columnId, rowId);
+    switch(state) {
+      case 'bomb': 
+        for (let i = -bombRadius; i <= bombRadius; i++) {
+          for (let j = -bombRadius; j <= bombRadius; j++) {
+            this.addToGroup(columnId - i, rowId - j, state);
+            this.selectedIds = null;
+          }
+        }
+        break;
+      case 'horizontal': 
+        for (let i = 0; i < M; i++) {
+          this.addToGroup(i, rowId, state);
+          this.selectedIds = null;
+        }
+        this.addToGroup(columnId, rowId, state);
+        break;
+      case 'vertical': 
+        for (let i = 0; i < N; i++) {
+          this.addToGroup(columnId, i, state);
+          this.selectedIds = null;
+        }
+        this.addToGroup(columnId, rowId, state);
+        break;
+      case 'nuke': 
+        for (let i = 0; i <= M; i++) {
+          for (let j = 0; j <= N; j++) {
+            this.addToGroup(i, j, state);
+            this.selectedIds = null;
+          }
+        }
+        break;
+      default:
+        this.addToGroup(columnId, rowId, state);
+        this.selectedIds = {col: columnId, row: rowId};
+        this.collectNeighbours(columnId, rowId);
+    }
+  }
+  
+  checkBonuses() {
+    if (this.selectedIds) {
+      const selected = this.field[this.selectedIds.col][this.selectedIds.row];
+      console.log(this.removeIds.length)
+      if (this.removeIds.length >= nukeBonus) {
+        selected.type = 'nuke';
+        selected.toRemove = false;
+        return;
+      }
+      if (this.removeIds.length >= bombBonus) {
+        selected.type = 'bomb';
+        selected.toRemove = false;
+        return;
+      }
+      if (this.removeIds.length >= verticalBonus) {
+        selected.type = 'vertical';
+        selected.toRemove = false;
+        return;
+      }
+      if (this.removeIds.length >= horizontalBonus) {
+        selected.type = 'horizontal';
+        selected.toRemove = false;
+        return;
+      }
+    }
   }
 
   removeBlocks() {
@@ -161,6 +229,7 @@ export class Game {
         this.updateField();
       }, animDuration / 2);
     }
+    this.checkBonuses();
     this.initGroup();
     this.removeIds = [];
   }

@@ -1,4 +1,4 @@
-import { types } from "../constants";
+import { colors } from "../constants";
 
 export class RNG {
     constructor() {
@@ -9,7 +9,7 @@ export class RNG {
     }
 
     getType() {
-        const typeId = this.generateNumber(types.length - 1);
-        return types[typeId];
+        const colorId = this.generateNumber(colors.length - 1);
+        return colors[colorId];
     }
 }
