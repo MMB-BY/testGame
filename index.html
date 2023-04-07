@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.cdnfonts.com/css/marvin" rel="stylesheet" />
+    <title>TestGame</title>
+  <script defer src="bundlee57802f6042f77332e68.js"></script></head>
+  <body>
+    <div id="main">
+      <div class="homeScreen">
+        <div class="homeScreen__start">
+          <h1>GAME</h1>
+          <label for="aimSet">Цель:</label>
+          <input
+            type="number"
+            name="aimSet"
+            min="1"
+            max="1000"
+            value="50"
+            id="aimSet"
+          />
+          <label for="stepsSet">Шаги:</label>
+          <input
+            type="number"
+            name="stepsSet"
+            min="5"
+            max="100"
+            value="20"
+            id="stepsSet"
+          />
+          <button id="gameStart">Start</button>
+        </div>
+      </div>
+      <div class="gameScreen">
+        <div class="progress">
+          <span class="progress__title">Прогресс</span>
+          <div class="progress__PB-background">
+            <div id="score"></div>
+          </div>
+        </div>
+        <div class="gameField">
+          <canvas id="canvas" width="435" height="480"></canvas>
+          <div class="gameField__controls">
+            <div class="panelScore">
+              <div class="panelScore__moves">
+                <span id="moves"></span>
+              </div>
+              <div class="panelScore__points">
+                <span>очки:</span>
+                <span id="points"></span>
+              </div>
+            </div>
+            <div class="restart" id="restart">заново</div>
+            <div class="shuffle" id="shuffle">
+              заполнить (<span id="shuffleTimes"></span>)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
