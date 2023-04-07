@@ -38,7 +38,7 @@ export class Gamefield {
     data.forEach((elem) => {
       let removed = false;
       if (!elem.toRemove) return;
-      const frameDelta = (1 / (animDuration / 2)) * deltaTime / 10;
+      const frameDelta = ((1 / (animDuration / 2)) * deltaTime) / 10;
       if (elem.scale > 0 && !removed) {
         elem.scale -= frameDelta;
       } else {
@@ -46,7 +46,7 @@ export class Gamefield {
       }
     });
     this.render(data);
-    if (deltaTime < (animDuration / 2)) {
+    if (deltaTime < animDuration / 2) {
       requestAnimationFrame(() => this.tickRemove(data, time));
     }
   }
@@ -61,14 +61,14 @@ export class Gamefield {
     });
     requestAnimationFrame(() => this.tickDrop(data, time));
   }
-  
+
   animRemove(field) {
     this.animInProgress = true;
     const time = new Date().getTime();
     const data = field.flat();
     requestAnimationFrame(() => this.tickRemove(data, time));
   }
-  
+
   dropAll(field) {
     this.animInProgress = true;
     const time = new Date().getTime();
@@ -77,14 +77,13 @@ export class Gamefield {
       elem.move = 1000;
     });
     requestAnimationFrame(() => this.tickDrop(data, time));
-
   }
 
   animWin(field) {
     this.win = true;
     this.dropAll(field);
   }
-  
+
   animLose(field) {
     this.lose = true;
     this.dropAll(field);
@@ -94,37 +93,38 @@ export class Gamefield {
     const ctx = this.canvas.getContext("2d");
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const data = field.flat();
-    data.forEach(({
-        x,
-        y,
-        width,
-        height,
-        type,
-        scale,
-    }) => {
-        if (!type) return;
-        const block = this.blocks.find((block) => block.type === type);
-        const image = new Image(blockSize.width, blockSize.height);
-        if (block.img) {
-          image.src = block.img.src;
-          ctx.drawImage(
-            image,
-            x + (width * (0.5 - scale / 2)) + canvasPadding / 2,
-            y + (height * (0.5 - scale / 2)) + canvasPadding / 2,
-            width * scale,
-            height * scale,
-          );
-        }    
+    data.forEach(({ x, y, width, height, type, scale }) => {
+      if (!type) return;
+      const block = this.blocks.find((block) => block.type === type);
+      const image = new Image(blockSize.width, blockSize.height);
+      if (block.img) {
+        image.src = block.img.src;
+        ctx.drawImage(
+          image,
+          x + width * (0.5 - scale / 2) + canvasPadding / 2,
+          y + height * (0.5 - scale / 2) + canvasPadding / 2,
+          width * scale,
+          height * scale
+        );
+      }
     });
     if (this.win) {
-      ctx.fillStyle = '#ffffff'
+      ctx.fillStyle = "#ffffff";
       ctx.font = "100px serif";
-      ctx.fillText("WIN", (this.canvas.width / 2) - 100, (this.canvas.height / 2) + 25);
+      ctx.fillText(
+        "WIN",
+        this.canvas.width / 2 - 100,
+        this.canvas.height / 2 + 25
+      );
     }
     if (this.lose) {
-      ctx.fillStyle = '#ffffff'
+      ctx.fillStyle = "#ffffff";
       ctx.font = "100px serif";
-      ctx.fillText("Lose", (this.canvas.width / 2) - 100, (this.canvas.height / 2) + 25);
+      ctx.fillText(
+        "Lose",
+        this.canvas.width / 2 - 100,
+        this.canvas.height / 2 + 25
+      );
     }
   }
 }

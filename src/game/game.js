@@ -53,11 +53,11 @@ export class Game {
         });
       }
       this.field.push(column);
-    };
+    }
   }
 
   selectBlock(x, y) {
-    let pos = {columnId: -1, rowId: -1};
+    let pos = { columnId: -1, rowId: -1 };
     this.field.forEach((column, columnId) => {
       column.forEach((elem, rowId) => {
         const { x: elemX, y: elemY, width, height } = elem;
@@ -86,7 +86,7 @@ export class Game {
 
   addToGroup(columnId, rowId, value) {
     if (columnId >= 0 && columnId < M && rowId >= 0 && rowId < N)
-    this.group[columnId][rowId] = value;
+      this.group[columnId][rowId] = value;
   }
 
   checkNeighbour(columnId, rowId, direction, value) {
@@ -155,8 +155,8 @@ export class Game {
 
   findGroup(columnId, rowId) {
     const state = this.field[columnId][rowId].type;
-    switch(state) {
-      case 'bomb': 
+    switch (state) {
+      case "bomb":
         for (let i = -bombRadius; i <= bombRadius; i++) {
           for (let j = -bombRadius; j <= bombRadius; j++) {
             this.addToGroup(columnId - i, rowId - j, state);
@@ -164,21 +164,21 @@ export class Game {
           }
         }
         break;
-      case 'horizontal': 
+      case "horizontal":
         for (let i = 0; i < M; i++) {
           this.addToGroup(i, rowId, state);
           this.selectedIds = null;
         }
         this.addToGroup(columnId, rowId, state);
         break;
-      case 'vertical': 
+      case "vertical":
         for (let i = 0; i < N; i++) {
           this.addToGroup(columnId, i, state);
           this.selectedIds = null;
         }
         this.addToGroup(columnId, rowId, state);
         break;
-      case 'nuke': 
+      case "nuke":
         for (let i = 0; i <= M; i++) {
           for (let j = 0; j <= N; j++) {
             this.addToGroup(i, j, state);
@@ -188,31 +188,31 @@ export class Game {
         break;
       default:
         this.addToGroup(columnId, rowId, state);
-        this.selectedIds = {col: columnId, row: rowId};
+        this.selectedIds = { col: columnId, row: rowId };
         this.collectNeighbours(columnId, rowId);
     }
   }
-  
+
   checkBonuses() {
     if (this.selectedIds) {
       const selected = this.field[this.selectedIds.col][this.selectedIds.row];
       if (this.removeIds.length >= nukeBonus) {
-        selected.type = 'nuke';
+        selected.type = "nuke";
         selected.toRemove = false;
         return;
       }
       if (this.removeIds.length >= bombBonus) {
-        selected.type = 'bomb';
+        selected.type = "bomb";
         selected.toRemove = false;
         return;
       }
       if (this.removeIds.length >= verticalBonus) {
-        selected.type = 'vertical';
+        selected.type = "vertical";
         selected.toRemove = false;
         return;
       }
       if (this.removeIds.length >= horizontalBonus) {
-        selected.type = 'horizontal';
+        selected.type = "horizontal";
         selected.toRemove = false;
         return;
       }
@@ -295,7 +295,7 @@ export class Game {
     this.gamefield.animWin(this.field);
     this.canvas.removeEventListener("click", this.clickCB);
     document.getElementById("restart").style.display = "flex";
-    this.shuffle.getShuffleButton().style.display = 'none';
+    this.shuffle.getShuffleButton().style.display = "none";
   }
 
   lose() {
@@ -303,9 +303,9 @@ export class Game {
     this.gamefield.animLose(this.field);
     this.canvas.removeEventListener("click", this.clickCB);
     document.getElementById("restart").style.display = "flex";
-    this.shuffle.getShuffleButton().style.display = 'none';
+    this.shuffle.getShuffleButton().style.display = "none";
   }
-  
+
   shuffleCB() {
     this.setField();
     this.gamefield.render(this.field);
@@ -319,7 +319,9 @@ export class Game {
     this.score.init();
     this.moves.init();
     this.shuffle.init();
-    this.shuffle.getShuffleButton().addEventListener('click', () => this.shuffleCB());
+    this.shuffle
+      .getShuffleButton()
+      .addEventListener("click", () => this.shuffleCB());
     this.setField();
     this.initGroup();
     this.gamefield.render(this.field);

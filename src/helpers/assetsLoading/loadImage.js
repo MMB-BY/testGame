@@ -1,6 +1,6 @@
 import { blockSize } from "../../constants";
 
-export const loadImage = ({link, type}) => {
+export const loadImage = ({ link, type }) => {
   return new Promise((resolve) => {
     const img = new Image();
     img.onerror = (e) => reject(`${link} failed to load`);
