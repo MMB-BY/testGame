@@ -1,6 +1,6 @@
 export class Score {
-  constructor() {
-    this.aim = 50;
+  constructor(aimSet) {
+    this.aim = aimSet;
     this.score = 0;
     this.scoreField = document.getElementById("score");
     this.pointsField = document.getElementById("points");
@@ -14,12 +14,17 @@ export class Score {
   }
 
   init() {
-    this.score = 0;
+    if (this.aim < 1) this.aim = 1;
+    if (this.aim > 1000) this.aim = 1000;
     this.set();
   }
 
   increase() {
     this.score++;
     this.set();
+  }
+
+  checkWin() {
+    return this.score >= this.aim;
   }
 }

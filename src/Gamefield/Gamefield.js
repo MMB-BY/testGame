@@ -10,6 +10,8 @@ export class Gamefield {
     this.canvas = document.getElementById("canvas");
     this.rng = new RNG();
     this.animInProgress = false;
+    this.win = false;
+    this.lose = false;
   }
 
   tickDrop(data, time) {
@@ -66,6 +68,27 @@ export class Gamefield {
     const data = field.flat();
     requestAnimationFrame(() => this.tickRemove(data, time));
   }
+  
+  dropAll(field) {
+    this.animInProgress = true;
+    const time = new Date().getTime();
+    const data = field.flat();
+    data.forEach((elem) => {
+      elem.move = 1000;
+    });
+    requestAnimationFrame(() => this.tickDrop(data, time));
+
+  }
+
+  animWin(field) {
+    this.win = true;
+    this.dropAll(field);
+  }
+  
+  animLose(field) {
+    this.lose = true;
+    this.dropAll(field);
+  }
 
   render(field) {
     const ctx = this.canvas.getContext("2d");
@@ -93,5 +116,15 @@ export class Gamefield {
           );
         }    
     });
+    if (this.win) {
+      ctx.fillStyle = '#ffffff'
+      ctx.font = "100px serif";
+      ctx.fillText("WIN", (this.canvas.width / 2) - 100, (this.canvas.height / 2) + 25);
+    }
+    if (this.lose) {
+      ctx.fillStyle = '#ffffff'
+      ctx.font = "100px serif";
+      ctx.fillText("Lose", (this.canvas.width / 2) - 100, (this.canvas.height / 2) + 25);
+    }
   }
 }

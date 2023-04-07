@@ -9,13 +9,14 @@
   </head>
   <body>
     <div id="main">
-      <div class="homeScreen" hidden>
+      <div class="homeScreen">
         <div class="homeScreen__start">
-          <button id="button">click</button>
-        </div>
-        <div class="homeScreen__reStart">
-
-          <button id="button">click</button>
+          <h1>GAME</h1>
+          <label for="aimSet">Цель:</label>
+          <input type="number" name="aimSet" min="1" max="1000" value="50" id="aimSet">
+          <label for="stepsSet">Шаги:</label>
+          <input type="number" name="stepsSet" min="5" max="100" value="20" id="stepsSet">
+          <button id="gameStart">Start</button>
         </div>
       </div>
       <div class="gameScreen">
@@ -37,6 +38,7 @@
                 <span id="points"></span>
               </div>
             </div>
+            <div class="restart" id="restart">заново</div>
           </div>
         </div>
       </div>

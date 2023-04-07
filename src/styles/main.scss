@@ -6,25 +6,61 @@ $primary-grey: #dddddd;
   padding: 0;
   box-sizing: border-box;
   user-select: none;
-  font-family: 'Marvin', sans-serif;
+  font-family: "Marvin", sans-serif;
+  color: $primary-grey;
 }
 
 body {
   background-color: $background-main;
 }
 
-h1 {
-  color: blue;
+.homeScreen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    label {
+      font-size: 24px;
+    }
+
+    input {
+      color: black;
+      width: 120px;
+      padding: 5px;
+      border-radius: 10px;
+      font-size: 24px;
+    }
+
+    button {
+      width: 150px;
+      height: 70px;
+      font-size: 36px;
+      border-radius: 10px;
+      color: black;
+      cursor: pointer;
+
+      &:hover {
+        color: $primary-grey;
+      }
+    }
+  }
 }
 
 .gameScreen {
-  display: flex;
   flex-direction: column;
+  display: none;
 
   .gameField {
     display: flex;
     justify-content: space-evenly;
-    
+
     &__controls {
       display: flex;
       flex-direction: column;
@@ -57,8 +93,19 @@ h1 {
           gap: 5px;
         }
       }
-  }
 
+      .restart {
+        width: 230px;
+        height: 75px;
+        background-image: url(../assets/button.png);
+        background-size: contain;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
   }
 }
 
@@ -82,7 +129,6 @@ canvas {
   margin-bottom: 50px;
 
   &__title {
-    color: $primary-grey;
     text-transform: uppercase;
     font-size: 20px;
     font-weight: 800;

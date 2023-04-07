@@ -12,15 +12,16 @@ import { Moves } from "./moves";
 import { Score } from "./score";
 
 export class Game {
-  constructor(images) {
+  constructor(images, aim, steps) {
     this.canvas = document.getElementById("canvas");
-    this.score = new Score();
-    this.moves = new Moves();
+    this.score = new Score(aim);
+    this.moves = new Moves(steps);
     this.rng = new RNG();
     this.gamefield = new Gamefield(images);
     this.field = [];
     this.group = new Array(M).fill(null).map(() => new Array(N).fill(null));
     this.removeIds = [];
+    this.gameOver = false;
   }
 
   initGroup() {
@@ -150,6 +151,7 @@ export class Game {
 
   removeBlocks() {
     if (this.removeIds.length >= minDelAmount) {
+      this.moves.decrement();
       this.removeIds.forEach(({ CI, RI }) => {
         this.field[CI][RI].toRemove = true;
         this.score.increase();
@@ -181,31 +183,54 @@ export class Game {
       });
     });
     this.gamefield.animDrop(this.field);
+    this.checkGame();
   }
 
-  addListener() {
+  clickCB(event) {
     const canvasLeft =
       this.canvas.offsetLeft + this.canvas.clientLeft + canvasPadding / 2;
     const canvasTop =
       this.canvas.offsetTop + this.canvas.clientTop + canvasPadding / 2;
-    this.canvas.addEventListener("click", (event) => {
-      if (this.gamefield.animInProgress) return;
-      const x = event.pageX - canvasLeft;
-      const y = event.pageY - canvasTop;
-      const { columnId, rowId } = this.selectBlock(x, y);
-      if (columnId >= 0 && rowId >= 0) {
-        this.findGroup(columnId, rowId);
-        this.group.forEach((column, CI) => {
-          column.forEach((row, RI) => {
-            if (row) {
-              this.removeIds.push({ CI, RI });
-            }
-          });
+    if (this.gamefield.animInProgress || this.gameOver) return;
+    const x = event.pageX - canvasLeft;
+    const y = event.pageY - canvasTop;
+    const { columnId, rowId } = this.selectBlock(x, y);
+    if (columnId >= 0 && rowId >= 0) {
+      this.findGroup(columnId, rowId);
+      this.group.forEach((column, CI) => {
+        column.forEach((row, RI) => {
+          if (row) {
+            this.removeIds.push({ CI, RI });
+          }
         });
-        this.removeBlocks();
-        this.moves.decrement();
-      }
-    });
+      });
+      this.removeBlocks();
+    }
+  }
+
+  addListener() {
+    this.canvas.addEventListener("click", (event) => this.clickCB(event));
+  }
+
+  checkGame() {
+    const isWin = this.score.checkWin();
+    const isLose = this.moves.checkLose();
+    if (isWin) this.win();
+    if (isLose) this.lose();
+  }
+
+  win() {
+    this.gameOver = true;
+    this.gamefield.animWin(this.field);
+    this.canvas.removeEventListener("click", this.clickCB);
+    document.getElementById("restart").style.display = "flex";
+  }
+
+  lose() {
+    this.gameOver = true;
+    this.gamefield.animLose(this.field);
+    this.canvas.removeEventListener("click", this.clickCB);
+    document.getElementById("restart").style.display = "flex";
   }
 
   initGame() {
